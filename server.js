@@ -733,13 +733,33 @@ app.post("/analyze", upload.single("resume"), async (req, res) => {
             return res.status(400).json({ error: "Empty PDF" });
         }
 
+        // 🔥 STRONG PROMPT
+        const prompt = `
+You are an expert ATS resume analyzer and HR recruiter.
+
+Analyze the following resume and provide:
+
+1. ATS Score (out of 100)
+2. Key Skills found
+3. Missing Skills (important for job)
+4. Suggestions to improve resume
+5. Mistakes in resume
+6. Recommended projects to build
+7. Overall feedback
+
+Give output in clean format with headings.
+
+Resume:
+${text}
+`;
+
         const response = await axios.post(
             "https://api.cerebras.ai/v1/chat/completions",
             {
                 model: "llama3.1-8b",
                 messages: [
-                    { role: "system", content: "You are HR." },
-                    { role: "user", content: text }
+                    { role: "system", content: "You are a professional HR and ATS system." },
+                    { role: "user", content: prompt }
                 ]
             },
             {
@@ -750,16 +770,15 @@ app.post("/analyze", upload.single("resume"), async (req, res) => {
             }
         );
 
-        res.json({
-            result: response.data.choices?.[0]?.message?.content || "No result"
-        });
+        const result = response.data.choices?.[0]?.message?.content;
+
+        res.json({ result });
 
     } catch (err) {
-        console.error(err.message);
+        console.error(err.response?.data || err.message);
         res.status(500).json({ error: "Resume analysis failed" });
     }
 });
-
 // =======================
 // 🔥 START SERVER
 // =======================

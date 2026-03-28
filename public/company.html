@@ -1,115 +1,264 @@
-
-
-
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>SmartPlace | Company Data</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Target Companies | Smart Placement</title>
 
-<style>
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background: #f8fafc;
-  padding: 20px;
-}
+  <style>
+    /* Global Reset & Theme */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-.container {
-  max-width: 1200px;
-  margin: auto;
-}
+    :root {
+      --primary: #156abe;
+      --primary-hover: #0e5499;
+      --bg-white: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #f1f5f9;
+      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      --card-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
 
-h1 {
-  text-align: center;
-  margin-bottom: 30px;
-}
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-white);
+      color: var(--text-main);
+      padding-top: 80px;
+      -webkit-font-smoothing: antialiased;
+    }
 
-/* Grid */
-.company-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-}
+    /* Top Navigation */
+    .nav-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 0 40px;
+      height: 70px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      z-index: 1000;
+    }
 
-/* Card */
-.card {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  cursor: pointer;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  transition: 0.3s;
-}
+    .brand {
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #1a1a1a;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
 
-.card:hover {
-  transform: translateY(-5px);
-}
+    .brand span {
+      background: linear-gradient(135deg, #156abe, #00d2ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-.logo {
-  width: 60px;
-  height: 60px;
-  background: #eef2ff;
-  border-radius: 50%;
-  margin: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: #3b82f6;
-}
+    .container {
+      max-width: 1300px;
+      margin: auto;
+      padding: 40px;
+    }
 
-.cgpa {
-  background: #dcfce7;
-  padding: 5px 10px;
-  border-radius: 20px;
-  display: inline-block;
-  margin-top: 10px;
-}
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      text-align: center;
+      margin-bottom: 40px;
+      color: var(--text-main);
+    }
 
-/* Modal */
-.modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-  justify-content: center;
-  align-items: center;
-}
+    /* Grid Layout */
+    .company-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+    }
 
-.modal-content {
-  background: white;
-  padding: 25px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 600px;
-}
+    /* Card Design */
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      cursor: pointer;
+      text-align: center;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--card-shadow);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
 
-.close {
-  float: right;
-  cursor: pointer;
-  font-size: 20px;
-}
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--card-shadow-hover);
+      border-color: var(--primary);
+    }
 
-.apply-btn {
-  display: block;
-  margin-top: 20px;
-  padding: 10px;
-  text-align: center;
-  background: #3b82f6;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-}
-</style>
+    .logo {
+      width: 64px;
+      height: 64px;
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      transition: background 0.3s;
+    }
 
+    .card:hover .logo {
+      background: #eff6ff;
+    }
+
+    .card h3 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .cgpa-pill {
+      background: #f0fdf4;
+      color: #166534;
+      padding: 6px 14px;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: inline-block;
+      border: 1px solid #dcfce7;
+    }
+
+    /* Modal Styling */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 40px;
+      border-radius: 24px;
+      width: 100%;
+      max-width: 650px;
+      position: relative;
+      animation: modalSlide 0.4s ease-out;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    @keyframes modalSlide {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      cursor: pointer;
+      font-size: 24px;
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+
+    .close:hover { color: var(--text-main); }
+
+    .modal-content h2 {
+      font-size: 2rem;
+      font-weight: 900;
+      margin-bottom: 15px;
+      letter-spacing: -1px;
+    }
+
+    .detail-row {
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+      display: flex;
+      gap: 10px;
+    }
+
+    .detail-label {
+      font-weight: 700;
+      color: var(--text-muted);
+      min-width: 120px;
+    }
+
+    .tag-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .tag {
+      background: #f1f5f9;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .apply-btn {
+      display: block;
+      margin-top: 30px;
+      padding: 16px;
+      text-align: center;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+
+    .apply-btn:hover {
+      background: var(--primary-hover);
+      transform: scale(1.02);
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: 20px; }
+      h1 { font-size: 2rem; }
+      .nav-header { padding: 0 20px; }
+    }
+  </style>
 </head>
 
 <body>
+
+<header class="nav-header">
+  <div class="brand">Smart<span>Placement</span></div>
+</header>
 
 <div class="container">
   <h1>Target Companies</h1>
@@ -118,47 +267,69 @@ h1 {
 
 <div class="modal" id="modal">
   <div class="modal-content">
-    <span class="close" onclick="closeModal()">✖</span>
+    <span class="close" onclick="closeModal()">X</span>
     <div id="modalData"></div>
   </div>
 </div>
 
 <script>
-
 let companies = [];
+
+// --- MOCK DATA FOR PREVIEW ---
+const mockCompanies = [
+  {
+    name: "Google",
+    summary: "Cloud, Search, and AI technologies.",
+    description: "Google is a global leader in technology, focusing on search engine technology, online advertising, cloud computing, and computer software.",
+    location: "Mountain View / Bengaluru",
+    package: "32 - 45 LPA",
+    cgpa: "8.5+",
+    difficulty: "Hard",
+    roles: ["Software Engineer", "Site Reliability Engineer"],
+    skills: ["DS & Algo", "System Design", "Python/Go"],
+    rounds: ["Online Assessment", "Technical Rounds", "HR Round"],
+    eligibility: "B.Tech/M.Tech (CS/IT)",
+    apply: "#"
+  },
+  {
+    name: "Microsoft",
+    summary: "Software, hardware, and cloud solutions.",
+    description: "Microsoft Corporation is an American multinational technology corporation which produces computer software, consumer electronics, and personal computers.",
+    location: "Hyderabad / Noida",
+    package: "28 - 40 LPA",
+    cgpa: "8.0+",
+    difficulty: "Medium-Hard",
+    roles: ["Software Engineer", "Product Manager"],
+    skills: ["Problem Solving", "OOPS", "C# / Java"],
+    rounds: ["Coding Test", "Technical Interviews", "Managerial Round"],
+    eligibility: "All Tech Branches",
+    apply: "#"
+  }
+];
 
 const grid = document.getElementById("grid");
 const modal = document.getElementById("modal");
 const modalData = document.getElementById("modalData");
 
-// 🔥 Load from backend
 async function loadCompanies() {
   try {
-    grid.innerHTML = "<h3>Loading...</h3>";
-
-    const res = await fetch("http://localhost:5000/api/companies");
-
-    if (!res.ok) throw new Error("API error");
-
-    companies = await res.json();
-
-    if (!companies.length) {
-      grid.innerHTML = "<h3>No companies found</h3>";
-      return;
-    }
-
+    companies = mockCompanies;
     renderCards();
 
+    const res = await fetch("http://localhost:5000/api/companies");
+    if (!res.ok) throw new Error("API error");
+    const data = await res.json();
+    if (data.length > 0) {
+        companies = data;
+        renderCards();
+    }
   } catch (err) {
-    grid.innerHTML = "<h3 style='color:red'>⚠ Backend not running or error</h3>";
-    console.error(err);
+    console.log("Using mock data - Backend not connected.");
   }
 }
 
-// 🔥 Render cards
 function renderCards() {
   grid.innerHTML = "";
-
   companies.forEach((c, i) => {
     const card = document.createElement("div");
     card.className = "card";
@@ -168,56 +339,45 @@ function renderCards() {
       <div class="logo">${c.name ? c.name[0] : "?"}</div>
       <h3>${c.name || "No Name"}</h3>
       <p>${c.summary || "No summary available"}</p>
-      <div class="cgpa">CGPA: ${c.cgpa || "N/A"}</div>
+      <div class="cgpa-pill">CGPA: ${c.cgpa || "N/A"}</div>
     `;
-
     grid.appendChild(card);
   });
 }
 
-// 🔥 Show modal (SAFE VERSION)
 function showDetails(i) {
   const c = companies[i];
-
   modalData.innerHTML = `
     <h2>${c.name || ""}</h2>
-    <p>${c.description || "No description available"}</p>
+    <p style="color:#64748b; margin-bottom: 25px; line-height:1.6;">${c.description || "No description available"}</p>
 
-    <p><b>📍 Location:</b> ${c.location || "N/A"}</p>
-    <p><b>💰 Package:</b> ${c.package || "N/A"}</p>
-    <p><b>🎓 CGPA:</b> ${c.cgpa || "N/A"}</p>
-    <p><b>⚡ Difficulty:</b> ${c.difficulty || "N/A"}</p>
+    <div class="detail-row"><span class="detail-label">Location:</span> <span>${c.location || "N/A"}</span></div>
+    <div class="detail-row"><span class="detail-label">Package:</span> <span>${c.package || "N/A"}</span></div>
+    <div class="detail-row"><span class="detail-label">CGPA:</span> <span>${c.cgpa || "N/A"}</span></div>
+    <div class="detail-row"><span class="detail-label">Difficulty:</span> <span>${c.difficulty || "N/A"}</span></div>
+    
+    <div style="margin-top:20px">
+      <p class="detail-label">Roles:</p>
+      <div class="tag-container">${(c.roles || []).map(r => `<span class="tag">${r}</span>`).join("")}</div>
+    </div>
 
-    <p><b>💼 Roles:</b> ${(c.roles || []).join(", ")}</p>
-    <p><b>🧠 Skills:</b> ${(c.skills || []).join(", ")}</p>
-    <p><b>🧪 Rounds:</b> ${(c.rounds || []).join(", ")}</p>
+    <div style="margin-top:15px">
+      <p class="detail-label">Skills:</p>
+      <div class="tag-container">${(c.skills || []).map(s => `<span class="tag">${s}</span>`).join("")}</div>
+    </div>
 
-    <p><b>📌 Eligibility:</b> ${c.eligibility || "N/A"}</p>
+    <p style="margin-top:20px"><b>Eligibility:</b> ${c.eligibility || "N/A"}</p>
 
-    ${c.apply ? `
-      <a href="${c.apply}" target="_blank" class="apply-btn">Apply Now 🚀</a>
-    ` : ""}
+    ${c.apply ? `<a href="${c.apply}" target="_blank" class="apply-btn">Apply Now</a>` : ""}
   `;
-
   modal.style.display = "flex";
 }
 
-// Close modal
-function closeModal() {
-  modal.style.display = "none";
-}
+function closeModal() { modal.style.display = "none"; }
+window.onclick = (e) => { if (e.target == modal) closeModal(); };
 
-// Close on outside click
-window.onclick = (e) => {
-  if (e.target == modal) closeModal();
-};
-
-// 🚀 Start
 loadCompanies();
-
 </script>
-
-
 
 </body>
 </html>
