@@ -268,14 +268,16 @@ const upload = multer({ storage: multer.memoryStorage() });
 // =======================
 // 🔥 MONGODB CONNECTION (FIXED)
 // =======================
- mongoose.connect('mongodb+srv://abhishekrbmeena_db_user:88TETLRJtWhCS7Qg@cluster0.mbrrugu.mongodb.net/smartplace?retryWrites=true&w=majority')
+
+mongoose.connect('mongodb+srv://abhishekrbmeena_db_user:88TETLRJtWhCS7Qg@cluster0.mbrrugu.mongodb.net/smartplace?retryWrites=true&w=majority')
     .then(() => console.log("✅ MongoDB Connected"))
     .catch(err => {
         console.error("❌ MongoDB Error:", err);
         process.exit(1);
     });
 
-// =======================
+
+    // =======================
 // 🔥 SCHEMAS
 // =======================
 const Question = mongoose.model("Question", new mongoose.Schema({
