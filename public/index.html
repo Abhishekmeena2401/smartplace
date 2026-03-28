@@ -1,124 +1,222 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Resume Analyzer</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Analyzer | Smart Placement</title>
 
   <style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #f5f5f5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
+    /* Global Reset & Theme */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  .box {
-    background: white;
-    padding: 25px;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-    width: 500px; /* increased width */
-    text-align: center;
-  }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #ffffff; /* Full White Theme */
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
 
-  h2 {
-    margin-bottom: 15px;
-  }
+    /* Top Navigation / Brand Name */
+    .nav-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 20px 40px;
+      background: #ffffff;
+      border-bottom: 1px solid #eaeaea;
+      display: flex;
+      align-items: center;
+      z-index: 1000;
+    }
 
-  input {
-    margin: 10px 0;
-  }
+    .brand {
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #1a1a1a;
+      text-transform: uppercase;
+    }
 
-  button {
-    padding: 12px 18px;
-    border: none;
-    background: #156abe;
-    color: white;
-    margin-top: 10px;
-    /* border-radius: 5px; */
-    cursor: pointer;
-  }
+    .brand span {
+      color: #156abe; /* Accent Color */
+    }
 
-  
+    /* Main Container */
+    .box {
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05); /* Soft, modern shadow */
+      border: 1px solid #f0f0f0;
+      width: 100%;
+      max-width: 600px; 
+      text-align: center;
+      margin-top: 80px; /* Space for fixed nav */
+    }
 
-  #status {
-    margin-top: 10px;
-    font-size: 14px;
-  }
+    h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #111;
+    }
 
-  #result {
-    margin-top: 20px;
-    text-align: left;
-    white-space: pre-wrap;
-    font-size: 14px;
-    line-height: 1.6;
-    border-top: 1px solid #ddd;
-    padding-top: 15px;
-    max-height: 300px;
-    overflow-y: auto; 
-  }
-</style>
+    .subtitle {
+      color: #666;
+      font-size: 0.95rem;
+      margin-bottom: 25px;
+    }
 
+    /* File Input Styling */
+    input[type="file"] {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 20px 0;
+      border: 2px dashed #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: border-color 0.3s;
+    }
+
+    input[type="file"]:hover {
+      border-color: #156abe;
+    }
+
+    /* Button Styling */
+    button {
+      width: 100%;
+      padding: 14px 20px;
+      border: none;
+      background: #156abe;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.1s, background 0.2s;
+    }
+
+    button:hover {
+      background: #0e5499;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    /* Status Text */
+    #status {
+      margin-top: 15px;
+      font-weight: 500;
+      color: #156abe;
+    }
+
+
+    .res {
+      margin-top: 20px;
+      text-align: left;
+      white-space: pre-wrap;
+      font-family: 'Inter', sans-serif; /* Cleaner than monospace */
+      font-size: 0.95rem;
+      line-height: 1.6;
+      background: #fafafa;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 20px;
+      max-height: 400px;
+      overflow-y: auto;
+      color: #444;
+    }
+    /* Result Box Styling */
+    #result {
+      margin-top: 25px;
+      text-align: left;
+      white-space: pre-wrap;
+      font-family: 'Inter', sans-serif; /* Cleaner than monospace */
+      font-size: 0.95rem;
+      line-height: 1.6;
+      background: #fafafa;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 20px;
+      max-height: 400px;
+      overflow-y: auto;
+      color: #444;
+      display: none; /* Hidden until results appear */
+    }
+  </style>
 </head>
 
 <body>
 
+  <header class="nav-header">
+    <div class="brand">Smart<span>Placement</span></div>
+  </header>
+
   <div class="box">
-    <h2>AI Resume Analyzer | Smart Placement Helper </h2>
+    <h2>AI Resume Analyzer</h2>
+    <p class="subtitle">Upload your PDF or Word resume for instant feedback</p>
 
     <input type="file" id="file" />
-    <br>
 
-    <button onclick="upload()">analyze</button>
+    <button onclick="upload()">Analyze Resume</button>
 
     <p id="status"></p>
 
-    <pre id="result"></pre>
+    <pre class="res" id="result"></pre>
   </div>
 
-
   <script>
-async function upload() {
-  const fileInput = document.getElementById("file");
-  const file = fileInput.files[0];
+    async function upload() {
+      const fileInput = document.getElementById("file");
+      const resultBox = document.getElementById("result");
+      const file = fileInput.files[0];
 
-  if (!file) {
-    alert("Select a file first");
-    return;
-  }
+      if (!file) {
+        alert("Please select a file first");
+        return;
+      }
 
-  document.getElementById("status").innerText = "Analyzing...";
+      document.getElementById("status").innerText = "⏳ Processing your profile...";
+      resultBox.style.display = "none";
 
-  const formData = new FormData();
-  formData.append("resume", file);
+      const formData = new FormData();
+      formData.append("resume", file);
 
-  try {
-    const res = await fetch("/analyze", {
-      method: "POST",
-      body: formData
-    });
+      try {
+        const res = await fetch("/analyze", {
+          method: "POST",
+          body: formData
+        });
 
-    // ✅ check if server responded properly
-    if (!res.ok) {
-      throw new Error("Server returned error");
+        if (!res.ok) throw new Error("Server returned error");
+
+        const data = await res.json();
+
+        if (data.error) {
+          document.getElementById("status").innerText = "❌ Error: " + data.error;
+        } else {
+          document.getElementById("status").innerText = "Analysis Complete ✅";
+          resultBox.innerText = data.result;
+          resultBox.style.display = "block"; // Show box when result arrives
+        }
+
+      } catch (err) {
+        console.error(err);
+        document.getElementById("status").innerText = "⚠️ Server error. Please check console.";
+      }
     }
-
-    const data = await res.json();
-
-    if (data.error) {
-      document.getElementById("status").innerText = "Error: " + data.error;
-    } else {
-      document.getElementById("status").innerText = "Done ✅";
-      document.getElementById("result").innerText = data.result;
-    }
-
-  } catch (err) {
-    console.error(err); // ✅ see error in console
-    document.getElementById("status").innerText = "Server error (check console)";
-  }
-}
-</script>
+  </script>
 
 </body>
 </html>
