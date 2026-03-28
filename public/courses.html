@@ -217,59 +217,35 @@
 
     // --- MOCK DATA FOR INSTANT PREVIEW ---
  
-        {
-            title: "Java Programming Masterclass",
-            skill: "JAVA",
-            platform: "Udemy",
-            price: "₹499",
-            link: "#"
-        },
-        {
-            title: "Python for Data Science & AI",
-            skill: "PYTHON",
-            platform: "Coursera",
-            price: "Free",
-            link: "#"
-        },
-        {
-            title: "Full Stack Web Development (MERN)",
-            skill: "WEB DEV",
-            platform: "CodeWithHarry",
-            price: "Free",
-            link: "#"
-        },
-        {
-            title: "Advanced C++ Data Structures",
-            skill: "C++",
-            platform: "EDX",
-            price: "₹1,200",
-            link: "#"
-        }
-    ];
-
+ 
     let courses = [];
 
     // 🔥 Load Courses
     async function loadCourses() {
-        try {
-            // Show mock data while loading
-            courses = mockCourses;
-            renderCourses();
+  try {
+    const res = await fetch("/api/courses");
 
-            const res = await fetch("/api/courses");
-            if (!res.ok) throw new Error("API error");
-
-            const data = await res.json();
-            if (data.length > 0) {
-                courses = data;
-                renderCourses();
-            }
-
-        } catch (err) {
-            console.log("Using local mock data - Backend not connected.");
-        }
+    if (!res.ok) {
+      throw new Error("API failed");
     }
 
+    const data = await res.json();
+
+    console.log("API DATA:", data); // 🔥 debug
+
+    if (!data || data.length === 0) {
+      container.innerHTML = "<p>No courses found</p>";
+      return;
+    }
+
+    courses = data;
+    renderCourses();
+
+  } catch (err) {
+    console.error(err);
+    container.innerHTML = "<p>Failed to load courses</p>";
+  }
+}
     // 🔥 Render cards
     function renderCourses() {
         container.innerHTML = "";
@@ -284,7 +260,7 @@
                 <div class="platform">Source: ${course.platform || "Unknown"}</div>
                 <div class="price-container">
                     <span class="price-tag">${course.price || "Free"}</span>
-                    <a href="${course.link && course.link.startsWith('http') ? course.link : 'https://' + course.link}" 
+                    <a href="${course.link && course.link.startsWith('http') ? course.link : '#'}"
                        target="_blank" 
                        class="enroll-btn">
                        Explore Now
