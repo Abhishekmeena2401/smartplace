@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartPlace | Student Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #3b82f6;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 80px; /* Space for mobile nav */
+        }
+
+        /* Top Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1100px;
+            margin: 3rem auto;
+            padding: 0 20px;
+        }
+
+        .welcome-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .welcome-section h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .welcome-section p {
+            color: var(--text-muted);
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.05);
+            transform: translateY(-4px);
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 4rem 0;
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+        }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* Bottom Mobile Navigation */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: var(--white);
+            background: white;
+            border-top: 1px solid var(--border);
+            padding: 12px 0;
+            justify-content: space-around;
+            z-index: 1000;
+        }
+
+        .mobile-nav a {
+            text-decoration: none;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .mobile-nav { display: flex; }
+            .container { margin-top: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <h1>SmartPlace</h1>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="company.html">Companies</a>
+            <a href="quiz.html">Tests</a>
+            <a href="profile.html">Profile</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="welcome-section">
+            <h2>Portal Overview</h2>
+            <p>Access your placement resources and preparation tools.</p>
+        </header>
+
+        <div class="dashboard-grid">
+            <div class="card" onclick="goTo('company.html')">
+                <h3>Company Data</h3>
+                <p>Track eligibility, interview rounds, and hiring trends.</p>
+            </div>
+
+            <div class="card" onclick="goTo('index.html')">
+                <h3>Resume Analysis</h3>
+                <p>Scan your CV against industry standards using AI.</p>
+            </div>
+
+            <div class="card" onclick="goTo('quiz.html')">
+                <h3>Technical Quiz</h3>
+                <p>Practice DSA, SQL, and Core Engineering concepts.</p>
+            </div>
+
+            <div class="card" onclick="goTo('courses.html')">
+                <h3>Skill Courses</h3>
+                <p>Curated learning paths for high-paying roles.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 SmartPlace Ecosystem. All rights reserved.</p>
+        <p style="margin-top: 10px;">Privacy Policy • Terms of Service</p>
+    </footer>
+
+    <nav class="mobile-nav">
+        <a href="dashboard.html">Home</a>
+        <a href="company.html">Companies</a>
+        <a href="quiz.html">Quiz</a>
+        <a href="courses.html">Courses</a>
+    </nav>
+
+    <script> 
+        function goTo(page) {
+            window.location.href = page;
+        }
+    </script>
+</body>
+</html>

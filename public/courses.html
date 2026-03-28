@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Tech Courses | Learning Hub</title>
+    <style>
+        :root {
+            --primary: #059669; /* A professional green */
+            --secondary: #64748b;
+            --accent: #2563eb;
+            --bg: #f1f5f9;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+
+        .subtitle {
+            color: var(--secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Responsive Grid */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Card Design */
+        .course-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #e2e8f0;
+        }
+
+        .course-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+            border-color: var(--accent);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            background: #eff6ff;
+            color: var(--accent);
+        }
+
+        .course-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            line-height: 1.4;
+            margin: 0 0 12px 0;
+            height: 56px; /* Keeps titles aligned */
+            overflow: hidden;
+        }
+
+        .platform {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .price-container {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .price-tag {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .enroll-btn {
+            background-color: var(--accent);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .enroll-btn:hover {
+            background-color: #1e40af;
+        }
+
+        @media (max-width: 640px) {
+            .course-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Advanced Course Catalog</h1>
+        <p class="subtitle">Master Java, Python, C++, and more with top global platforms</p>
+    </div>
+
+    <div class="course-grid" id="course-container">
+        </div>
+
+
+
+
+<script>
+
+const container = document.getElementById('course-container');
+
+let courses = [];
+
+// 🔥 Fetch from backend
+async function loadCourses() {
+  try {
+    container.innerHTML = "<h3>Loading...</h3>";
+
+    const res = await fetch("http://localhost:5000/api/courses");
+
+    if (!res.ok) throw new Error("API error");
+
+    courses = await res.json();
+
+    if (!courses.length) {
+      container.innerHTML = "<h3>No courses found</h3>";
+      return;
+    }
+
+    renderCourses();
+
+  } catch (err) {
+    container.innerHTML = "<h3 style='color:red'>Backend not running</h3>";
+  }
+}
+
+// 🔥 Render cards
+function renderCourses() {
+  container.innerHTML = "";
+
+  courses.forEach(course => {
+    const card = document.createElement('div');
+    card.className = 'course-card';
+
+    card.innerHTML = `
+      <span class="badge">${course.skill || "N/A"}</span>
+      <h3 class="course-title">${course.title || "No Title"}</h3>
+      <div class="platform">Source: ${course.platform || "Unknown"}</div>
+      <div class="price-container">
+        <span class="price-tag">${course.price || "Free"}</span>
+        <a href="${course.link && course.link.startsWith('http') ? course.link : 'https://' + course.link}" 
+   target="_blank" 
+   class="enroll-btn">
+   Explore Now
+</a>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+// 🚀 Start
+loadCourses();
+
+</script>
+
+
+
+
+
+
+
+</body>
+</html>

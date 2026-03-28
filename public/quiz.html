@@ -1,0 +1,389 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartPlace | Technical Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #3b82f6;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--primary);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .skill-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .skill-btn {
+            padding: 15px;
+            border: 1px solid var(--border);
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .skill-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .options-label {
+            display: block;
+            padding: 10px;
+            margin: 5px 0;
+            background: #f1f5f9;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .hidden { display: none; }
+
+        .submit-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        #scoreCard {
+            text-align: center;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="selectionPhase">
+        <h2 style="margin-bottom: 20px;">Select a Skill to Start</h2>
+        <div class="skill-selector">
+            <button class="skill-btn" onclick="loadQuiz('python')">Python</button>
+            <button class="skill-btn" onclick="loadQuiz('java')">Java</button>
+            <button class="skill-btn" onclick="loadQuiz('cpp')">C++</button>
+            <button class="skill-btn" onclick="loadQuiz('javascript')">JavaScript</button>
+        </div>
+    </div>
+
+    <div id="quizPhase" class="hidden">
+        <h2 id="quizTitle" style="margin-bottom: 20px;"></h2>
+        <form id="quizForm"></form>
+        <button class="submit-btn" onclick="calculateScore()">Submit Quiz</button>
+    </div>
+
+    <div id="scoreCard" class="hidden">
+        <h2 style="font-size: 2rem;">Your Score</h2>
+        <p id="finalScore" style="font-size: 3rem; font-weight: 700; color: var(--accent);"></p>
+        <button class="skill-btn" onclick="location.reload()">Try Another</button>
+    </div>
+</div>
+
+<script>
+    let currentQuestions = [];
+
+    async function loadQuiz(skill) {
+        try {
+            // Replace with your actual Express API URL
+            const response = await fetch(`http://localhost:5000/api/questions/${skill}`);
+            currentQuestions = await response.json();
+
+            document.getElementById('selectionPhase').classList.add('hidden');
+            document.getElementById('quizPhase').classList.remove('hidden');
+            document.getElementById('quizTitle').innerText = skill.toUpperCase() + " Quiz";
+
+            const form = document.getElementById('quizForm');
+            form.innerHTML = currentQuestions.map((q, index) => `
+                <div class="question-block">
+                    <p><strong>Q${index + 1}:</strong> ${q.question}</p>
+                    ${q.options.map(opt => `
+                        <label class="options-label">
+                            <input type="radio" name="q${index}" value="${opt}"> ${opt}
+                        </label>
+                    `).join('')}
+                </div>
+            `).join('');
+        } catch (err) {
+            alert("Error loading questions. Make sure your backend is running!");
+        }
+    }
+
+    function calculateScore() {
+        let score = 0;
+        const formData = new FormData(document.getElementById('quizForm'));
+        
+        currentQuestions.forEach((q, index) => {
+            if (formData.get(`q${index}`) === q.answer) {
+                score++;
+            }
+        });
+
+        document.getElementById('quizPhase').classList.add('hidden');
+        document.getElementById('scoreCard').classList.remove('hidden');
+        document.getElementById('finalScore').innerText = `${score} / ${currentQuestions.length}`;
+    }
+</script>
+
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SmartPlace Quiz</title>
+
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f0f4f8;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+/* Heading */
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Skills Grid */
+.skills {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+}
+
+.skill-btn {
+  padding: 15px;
+  border: none;
+  background: #007bff;
+  color: white;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.skill-btn:hover {
+  background: #0056b3;
+  transform: scale(1.05);
+}
+
+/* Questions */
+.question {
+  margin: 20px 0;
+  padding: 15px;
+  background: #f9fafc;
+  border-radius: 8px;
+}
+
+.question p {
+  font-weight: 600;
+}
+
+/* Options */
+.option {
+  display: block;
+  margin: 8px 0;
+  padding: 10px;
+  background: #eef2f7;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.option:hover {
+  background: #dbeafe;
+}
+
+/* Submit Button */
+.submit-btn {
+  margin-top: 20px;
+  padding: 12px;
+  width: 100%;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background: #218838;
+}
+
+/* Result */
+.result-box {
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.correct {
+  color: green;
+}
+
+.wrong {
+  color: red;
+}
+
+.hidden {
+  display: none;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- Skills -->
+
+  <div id="skillSection">
+    <h2>Select Skill</h2>
+    <div class="skills">
+      <button class="skill-btn" onclick="loadQuiz('python')">Python</button>
+      <button class="skill-btn" onclick="loadQuiz('java')">Java</button>
+      <button class="skill-btn" onclick="loadQuiz('cpp')">C++</button>
+      <button class="skill-btn" onclick="loadQuiz('javascript')">JavaScript</button>
+      <button class="skill-btn" onclick="loadQuiz('html')">HTML</button>
+      <button class="skill-btn" onclick="loadQuiz('css')">CSS</button>
+    </div>
+  </div>
+
+  <!-- Quiz -->
+
+  <div id="quizSection" class="hidden">
+    <h2 id="title"></h2>
+    <form id="quizForm"></form>
+    <button type="button" class="submit-btn" onclick="submitQuiz()">Submit Quiz</button>
+  </div>
+
+  <!-- Result -->
+
+  <div id="resultSection" class="hidden"></div>
+
+</div>
+
+<script>
+
+let currentQuestions = [];
+
+// Load Quiz
+async function loadQuiz(skill) {
+  try {
+    const res = await fetch(`http://localhost:5000/api/questions/${skill}`);
+    currentQuestions = await res.json();
+
+    document.getElementById("skillSection").classList.add("hidden");
+    document.getElementById("quizSection").classList.remove("hidden");
+
+    document.getElementById("title").innerText = skill.toUpperCase() + " Quiz";
+
+    let html = "";
+
+    currentQuestions.forEach((q, i) => {
+      html += `
+        <div class="question">
+          <p>Q${i + 1}. ${q.question}</p>
+          ${q.options.map(opt => `
+            <label class="option">
+              <input type="radio" name="q${i}" value="${opt}">
+              ${opt}
+            </label>
+          `).join("")}
+        </div>
+      `;
+    });
+
+    document.getElementById("quizForm").innerHTML = html;
+
+  } catch (err) {
+    alert("Backend not running or no data!");
+  }
+}
+
+// Submit Quiz
+function submitQuiz() {
+  let score = 0;
+  let resultHTML = "";
+
+  currentQuestions.forEach((q, i) => {
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    const userAnswer = selected ? selected.value : "Not Attempted";
+    const correct = q.answer;
+
+    let statusClass = userAnswer === correct ? "correct" : "wrong";
+    if (userAnswer === correct) score++;
+
+    resultHTML += `
+      <div class="result-box">
+        <p><b>Q${i + 1}:</b> ${q.question}</p>
+        <p>Your Answer: <span class="${statusClass}">${userAnswer}</span></p>
+        <p>Correct Answer: <span class="correct">${correct}</span></p>
+      </div>
+    `;
+  });
+
+  resultHTML += `<h2>Your Score: ${score} / ${currentQuestions.length}</h2>`;
+  resultHTML += `<button class="submit-btn" onclick="location.reload()">Try Again</button>`;
+
+  document.getElementById("quizSection").classList.add("hidden");
+  document.getElementById("resultSection").classList.remove("hidden");
+
+  document.getElementById("resultSection").innerHTML = resultHTML;
+}
+
+</script>
+
+</body>
+</html>

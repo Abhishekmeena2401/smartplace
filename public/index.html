@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Resume Analyzer</title>
+
+  <style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .box {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    width: 500px; /* increased width */
+    text-align: center;
+  }
+
+  h2 {
+    margin-bottom: 15px;
+  }
+
+  input {
+    margin: 10px 0;
+  }
+
+  button {
+    padding: 12px 18px;
+    border: none;
+    background: #156abe;
+    color: white;
+    margin-top: 10px;
+    /* border-radius: 5px; */
+    cursor: pointer;
+  }
+
+  
+
+  #status {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+
+  #result {
+    margin-top: 20px;
+    text-align: left;
+    white-space: pre-wrap;
+    font-size: 14px;
+    line-height: 1.6;
+    border-top: 1px solid #ddd;
+    padding-top: 15px;
+    max-height: 300px;
+    overflow-y: auto; 
+  }
+</style>
+
+</head>
+
+<body>
+
+  <div class="box">
+    <h2>AI Resume Analyzer | Smart Placement Helper </h2>
+
+    <input type="file" id="file" />
+    <br>
+
+    <button onclick="upload()">analyze</button>
+
+    <p id="status"></p>
+
+    <pre id="result"></pre>
+  </div>
+
+  <script>
+    async function upload() {
+      const file = document.getElementById("file").files[0];
+
+      if (!file) {
+        alert("Select a file first");
+        return;
+      }
+
+      document.getElementById("status").innerText = "Analyzing...";
+
+      const formData = new FormData();
+      formData.append("resume", file);
+
+      try {
+        const res = await fetch("http://localhost:3000/analyze", {
+          method: "POST",
+          body: formData
+        });
+
+        const data = await res.json();
+
+        if (data.error) {
+          document.getElementById("status").innerText = "Error: " + data.error;
+        } else {
+          document.getElementById("status").innerText = "Done!";
+          document.getElementById("result").innerText = data.result;
+        }
+
+      } catch (err) {
+        document.getElementById("status").innerText = "Server error";
+      }
+    }
+  </script>
+
+</body>
+</html>
