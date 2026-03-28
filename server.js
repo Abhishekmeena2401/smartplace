@@ -637,7 +637,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 // =======================
 // 🔥 MONGODB CONNECTION
 // =======================
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect('mongodb+srv://abhishekrbmeena_db_user:88TETLRJtWhCS7Qg@cluster0.mbrrugu.mongodb.net/smartplace?retryWrites=true&w=majority')
     .then(() => console.log("✅ MongoDB Connected"))
     .catch(err => {
         console.error("❌ MongoDB Error:", err);
