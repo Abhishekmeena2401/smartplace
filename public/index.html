@@ -77,40 +77,48 @@
     <pre id="result"></pre>
   </div>
 
+
   <script>
-    async function upload() {
-      const file = document.getElementById("file").files[0];
+async function upload() {
+  const fileInput = document.getElementById("file");
+  const file = fileInput.files[0];
 
-      if (!file) {
-        alert("Select a file first");
-        return;
-      }
+  if (!file) {
+    alert("Select a file first");
+    return;
+  }
 
-      document.getElementById("status").innerText = "Analyzing...";
+  document.getElementById("status").innerText = "Analyzing...";
 
-      const formData = new FormData();
-      formData.append("resume", file);
+  const formData = new FormData();
+  formData.append("resume", file);
 
-      try {
-        const res = await fetch("/analyze", {
-          method: "POST",
-          body: formData
-        });
+  try {
+    const res = await fetch("/analyze", {
+      method: "POST",
+      body: formData
+    });
 
-        const data = await res.json();
-
-        if (data.error) {
-          document.getElementById("status").innerText = "Error: " + data.error;
-        } else {
-          document.getElementById("status").innerText = "Done!";
-          document.getElementById("result").innerText = data.result;
-        }
-
-      } catch (err) {
-        document.getElementById("status").innerText = "Server error";
-      }
+    // ✅ check if server responded properly
+    if (!res.ok) {
+      throw new Error("Server returned error");
     }
-  </script>
+
+    const data = await res.json();
+
+    if (data.error) {
+      document.getElementById("status").innerText = "Error: " + data.error;
+    } else {
+      document.getElementById("status").innerText = "Done ✅";
+      document.getElementById("result").innerText = data.result;
+    }
+
+  } catch (err) {
+    console.error(err); // ✅ see error in console
+    document.getElementById("status").innerText = "Server error (check console)";
+  }
+}
+</script>
 
 </body>
 </html>
